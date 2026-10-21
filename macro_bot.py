@@ -1,8 +1,13 @@
 import os, sys, json, html
 import feedparser, requests
 
-TOKEN = os.environ["TELEGRAM_TOKEN"]
-CHANNEL = os.environ["TELEGRAM_CHANNEL"]
+TOKEN = os.environ["TELEGRAM_TOKEN"].strip()
+CHANNEL = os.environ["TELEGRAM_CHANNEL"].strip()
+if CHANNEL.startswith("https://t.me/"):
+    CHANNEL = "@" + CHANNEL.split("/")[-1]
+elif not CHANNEL.startswith(("@", "-")):
+    CHANNEL = "@" + CHANNEL
+
 SEEN_FILE = "seen.json"
 MAX_PER_RUN = 10
 SEND_TEST = True   # dopo il primo test, metti False
