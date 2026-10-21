@@ -1,10 +1,11 @@
-import os, json, html
+import os, sys, json, html
 import feedparser, requests
 
 TOKEN = os.environ["TELEGRAM_TOKEN"]
 CHANNEL = os.environ["TELEGRAM_CHANNEL"]
 SEEN_FILE = "seen.json"
 MAX_PER_RUN = 10
+SEND_TEST = True   # dopo il primo test, metti False
 
 FEEDS = {
     "🏦 FED": "https://www.federalreserve.gov/feeds/press_all.xml",
@@ -12,12 +13,16 @@ FEEDS = {
 }
 
 def load_seen():
-    if os.path.exists(SEEN_FILE):
-        return json.load(open(SEEN_FILE))
-    return None
+    try:
+        with open(SEEN_FILE) as f:
+            data = json.load(f)
+        return data if isinstance(data, list) else None
+    except Exception:
+        return None
 
 def save_seen(seen):
-    json.dump(seen[-3000:], open(SEEN_FILE, "w"))
+    with open(SEEN_FILE, "w") as f:
+        json.dump(seen[-3000:], f)
 
 def send(text):
     r = requests.post(
@@ -26,9 +31,13 @@ def send(text):
         timeout=15,
     )
     if not r.ok:
-        print("Errore Telegram:", r.text)
+        sys.exit(f"ERRORE TELEGRAM {r.status_code}: {r.text}")
 
 def main():
+    if SEND_TEST:
+        send("✅ Test: il bot funziona!")
+        return
+
     seen = load_seen()
     first_run = seen is None
     seen = seen or []
