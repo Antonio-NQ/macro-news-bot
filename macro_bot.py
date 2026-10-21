@@ -10,7 +10,7 @@ elif not CHANNEL.startswith(("@", "-")):
 
 SEEN_FILE = "seen.json"
 MAX_PER_RUN = 10
-SEND_TEST = True   # dopo il primo test, metti False
+SEND_TEST = False
 
 FEEDS = {
     "🏦 FED": "https://www.federalreserve.gov/feeds/press_all.xml",
