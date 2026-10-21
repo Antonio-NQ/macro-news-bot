@@ -14,7 +14,7 @@ SEND_TEST = False
 
 FEEDS = {
     "🏦 FED": "https://www.federalreserve.gov/feeds/press_all.xml",
-    "🇪🇺 BCE": "https://www.ecb.europa.eu/rss/press.html",
+    "🇪🇺 BCE": "https://www.ecb.europa.eu/rss/press.hml",
 }
 
 def load_seen():
